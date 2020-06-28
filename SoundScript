@@ -1,0 +1,42 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SoundScript : MonoBehaviour
+{
+    int StageCount=0;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        breakSound();
+    }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void breakSound()
+    {
+
+     if (Input.GetMouseButtonDown(0))
+        {
+            StageCount++;
+        }
+
+     if(StageCount == 2)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
+}
