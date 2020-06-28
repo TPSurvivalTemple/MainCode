@@ -10,10 +10,19 @@ public class Player : MonoBehaviour
     private Animator anim;
     private int Keycount = 0;
 
+    public GameObject breakstone1;
+    public GameObject breakstone2;
+    public GameObject breaktrap;
     public GameObject breakstone;
 
     private AudioSource audio;
+    private AudioSource audio2;
     public AudioClip KeySound;
+    public AudioClip boombSound;
+
+    public static int StageNum = 0;
+    public static int failNum = 0;
+    public static int SoundDeth = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +30,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         this.audio = this.gameObject.AddComponent<AudioSource>();
         this.audio.loop = false;
+        this.audio2 = this.gameObject.AddComponent<AudioSource>();
+        this.audio2.loop = false;
     }
 
     // Update is called once per frame
@@ -29,6 +40,8 @@ public class Player : MonoBehaviour
         PlayerMove();
 
         DeleteKey();
+        DeleteKey2();
+        DeleteKey3();
     }
 
     void PlayerMove()
@@ -51,11 +64,13 @@ public class Player : MonoBehaviour
 
         if (other.tag == "NextDoor2")
         {
+            StageNum++;
             SceneManager.LoadScene("Stage2");
         }
 
         if (other.tag == "NextDoor3")
         {
+            StageNum++;
             SceneManager.LoadScene("Stage3");
         }
 
@@ -66,6 +81,7 @@ public class Player : MonoBehaviour
                 Keycount = Keycount - 3;
                 SceneManager.LoadScene("Stage4");
             }
+            StageNum++;
            
         }
 
@@ -73,23 +89,33 @@ public class Player : MonoBehaviour
         {
             if (Keycount >= 3)
             {
-                SceneManager.LoadScene("Clear");
+                SceneManager.LoadScene("FinalScene");
             }
         }
+
+        if(other.tag == "NextDoorEnd")
+        {
+            SceneManager.LoadScene("Clear");
+        }
+ 
 
 
         if (other.tag == "trap2")
         {
+            SoundDeth++;
+            failNum++;
             SceneManager.LoadScene("FailStage2");
         }
 
         if (other.tag == "trap3")
         {
+            failNum++;
             SceneManager.LoadScene("FailStage3");
         }
 
         if (other.tag == "trap4")
         {
+            failNum++;
             SceneManager.LoadScene("FailStage4");
         }
 
@@ -101,14 +127,38 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
         }
 
+        if(other.tag== "button")
+        {
+            this.audio2.clip = this.boombSound;
+            this.audio2.Play();
+            Destroy(breakstone);
+        }
+
       
+    }
+
+    void DeleteKey3()
+    {
+        if(Keycount >= 3)
+        {
+            Destroy(breakstone1);
+        }
+    }
+
+    void DeleteKey2()
+    {
+        if (Keycount >= 2)
+        {
+            Destroy(breakstone2);
+        }
     }
 
     void DeleteKey()
     {
-        if(Keycount >= 3)
+        if(Keycount >= 1)
         {
-            Destroy(breakstone);
+            Destroy(breaktrap);
         }
     }
 }
+
