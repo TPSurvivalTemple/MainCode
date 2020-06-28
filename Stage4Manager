@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+
+public class Stage4Manager : MonoBehaviour
+{
+    public float GameTime = 0;
+    public Text GameTimeText;
+
+
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        restart();
+
+        time();
+    }
+
+    void restart()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Stage4");
+        }
+    }
+
+    void time()
+    {
+        if ((int)GameTime == 0)
+        {
+            SceneManager.LoadScene("Failstage4");
+        }
+        else
+        {
+            GameTime -= Time.deltaTime;
+            Debug.Log((int)GameTime);
+            GameTimeText.text = "" + (int)GameTime;
+        }
+    }
+}
